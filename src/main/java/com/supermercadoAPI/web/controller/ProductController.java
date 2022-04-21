@@ -40,13 +40,33 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<ProductEntity> ListUser(){
+    public List<ProductEntity> ListProduct(){
         return productRepository.findAll();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id){
+    public void deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity editProduct(@RequestBody ProductEntity product, @PathVariable Long id){
+        Map<String, String> response = new HashMap<>();
+        try {
+            ProductEntity productEntity = productRepository.findById(id).get();
+            productEntity.setNombre(product.getNombre());
+            productEntity.setCodigoBarras(product.getCodigoBarras());
+            productEntity.setCantidadStock(product.getCantidadStock());
+            productEntity.setEstado(product.getEstado());
+            productEntity.setPrecioVenta(product.getPrecioVenta());
+            productRepository.save(productEntity);
+
+
+
+            return new ResponseEntity(productEntity,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
 

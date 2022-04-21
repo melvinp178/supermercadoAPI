@@ -20,19 +20,24 @@ public class ProductRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
+
     @Test
     public void testCreateProduct(){
         ProductEntity productEntity = new ProductEntity();
-
         productEntity.setNombre("arina");
         productEntity.setCantidadStock(5);
         productEntity.setCodigoBarras("1598753");
         productEntity.setEstado(true);
         productEntity.setPrecioVenta(500.0);
 
-        ProductEntity savedProduct = productRepository.save(productEntity);
+        Long productId =productEntity.getIdProducto();
 
-        ProductEntity existProduct = entityManager.find(ProductEntity.class, savedProduct.getIdProducto());
+        // descomentarizar metodo que desee probar
+
+       // ProductEntity savedProduct = productRepository.save(productEntity);
+       //  ProductEntity deleteProduct = productRepository.deleteById(productId);
+
+       // ProductEntity existProduct = entityManager.find(ProductEntity.class, savedProduct.getIdProducto());
 
     }
 }
