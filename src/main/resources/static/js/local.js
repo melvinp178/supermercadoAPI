@@ -89,7 +89,7 @@ function eliminaUsuario(id){
         .then(response => response.json())
         .then(function(data){
             listar();
-            alertas("Se ha eliminado el usuario exitosamente!",2)
+            alertas("Se ha eliminado el producto exitosamente!",2)
         })
 }
 
@@ -150,7 +150,7 @@ async function modificarUsuario(id){
         body: JSON.stringify(jsonData)
     });
     listar();
-    alertas("Se ha modificado el usuario exitosamente!",1)
+    alertas("Se ha modificado el producto exitosamente!",1)
     document.getElementById("contentModal").innerHTML = '';
     var myModalEl = document.getElementById('modalUsuario')
     var modal = bootstrap.Modal.getInstance(myModalEl) // Returns a Bootstrap modal instance
