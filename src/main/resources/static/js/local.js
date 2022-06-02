@@ -45,8 +45,8 @@ function listar(){
                     '<td>'+producto.estado+'</td>'+
                     '<td>'+producto.precioVenta+'</td>'+
                     '<td>'+
-                    '<button type="button" class="btn btn-outline-danger" onclick="eliminaUsuario(\''+producto.idProducto+'\')"><i class="fa-solid fa-user-minus"></i></button>'+
-                    '<a href="#" onclick="verModificarUsuario(\''+producto.idProducto+'\')" class="btn btn-outline-warning"><i class="fa-solid fa-user-pen"></i></a>'+
+                    '<button type="button" class="btn btn-outline-danger" onclick="eliminaUsuario(\''+producto.idProducto+'\')"><i class="fa-regular fa-trash-can"></i></button>'+
+                    '<a href="#" onclick="verModificarUsuario(\''+producto.idProducto+'\')" class="btn btn-outline-warning"><i class="fa-regular fa-file-pen"></i></a>'+
                     '<a href="#" onclick="verUsuario(\''+producto.idProducto+'\')" class="btn btn-outline-info"><i class="fa-solid fa-eye"></i></a>'+
                     '</td>'+
                     '</tr>';
@@ -85,7 +85,7 @@ function eliminaUsuario(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/users/"+id,settings)
+    fetch("/producto/delete/"+id,settings)
         .then(response => response.json())
         .then(function(data){
             listar();
@@ -101,26 +101,31 @@ function verModificarUsuario(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/users/"+id,settings)
+    fetch("/producto/"+id,settings)
         .then(response => response.json())
-        .then(function(usuario){
+        .then(function(producto){
             var cadena='';
-            if(usuario){
+            if(producto){
                 cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-                    '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Modificar Usuario</h1>'+
+                    '<h1 class="display-5"><i class="fa-regular fa-file-pen"></i> Editar Producto</h1>'+
                     '</div>'+
 
                     '<form action="" method="post" id="myForm">'+
-                    '<input type="hidden" name="id" id="id" value="'+usuario.id+'">'+
-                    '<label for="firstName" class="form-label">First Name</label>'+
-                    '<input type="text" class="form-control" name="firstName" id="firstName" required value="'+usuario.firstName+'"> <br>'+
-                    '<label for="lastName"  class="form-label">Last Name</label>'+
-                    '<input type="text" class="form-control" name="lastName" id="lastName" required value="'+usuario.lastName+'"> <br>'+
-                    '<label for="email" class="form-label">Email</label>'+
-                    '<input type="email" class="form-control" name="email" id="email" required value="'+usuario.email+'"> <br>'+
-                    '<label for="password" class="form-label">Password</label>'+
-                    '<input type="password" class="form-control" id="password" name="password" required> <br>'+
-                    '<button type="button" class="btn btn-outline-warning" onclick="modificarUsuario(\''+usuario.id+'\')">Modificar</button>'+
+                    '<input type="hidden" name="id" id="id" value="'+producto.idProducto+'">'+
+                    '<label for="nombre" class="form-label">nombre</label>'+
+                    '<input type="text" class="form-control" name="nombre" id="nombre" required value="'+producto.nombre+'"> <br>'+
+                    '<label for="codigoBarras"  class="form-label">codigo de barras</label>'+
+                    '<input type="text" class="form-control" name="codigoBarras" id="codigoBarras" required value="'+producto.codigoBarras+'"> <br>'+
+                    '<label for="precioVenta" class="form-label">precio</label>'+
+                    '<input type="text" class="form-control" name="precioVenta" id="precioVenta" required value="'+producto.precioVenta+'"> <br>'+
+                    '<label for="cantidadStock" class="form-label">cantidad</label>'+
+                    '<input type="number" class="form-control" id="cantidadStock" name="cantidadStock" required value="'+producto.cantidadStock+'"> <br>'+
+                    '<label for="estado" class="form-label">estado</label> <br>'+
+                    '<select class="form-select" name="estado" id="estado" >'+
+                    '<option value="true">true</option>'+
+                    '<option value="false">false</option>'+
+                    '</select><br> <br> <br>'+
+                    '<button type="button" class="btn btn-outline-warning" onclick="modificarUsuario(\''+producto.idProducto+'\')">Modificar</button>'+
                     '</form>';
             }
             document.getElementById("contentModal").innerHTML = cadena;
@@ -136,7 +141,7 @@ async function modificarUsuario(id){
     for(var [k, v] of formData){//convertimos los datos a json
         jsonData[k] = v;
     }
-    const request = await fetch("api/users/"+id, {
+    const request = await fetch("/producto/edit/"+id, {
         method: 'PUT',
         headers:{
             'Accept': 'application/json',
@@ -160,18 +165,20 @@ function verUsuario(id){
             'Content-Type': 'application/json'
         },
     }
-    fetch("api/users/"+id,settings)
+    fetch("/producto/"+id,settings)
         .then(response => response.json())
-        .then(function(usuario){
+        .then(function(producto){
             var cadena='';
-            if(usuario){
+            if(producto){
                 cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-                    '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Visualizar Usuario</h1>'+
+                    '<h1 class="display-5"><i class="fa-solid fa-eye"></i> Visualizar Producto</h1>'+
                     '</div>'+
                     '<ul class="list-group">'+
-                    '<li class="list-group-item">Nombre: '+usuario.firstName+'</li>'+
-                    '<li class="list-group-item">Apellido: '+usuario.lastName+'</li>'+
-                    '<li class="list-group-item">Correo: '+usuario.email+'</li>'+
+                    '<li class="list-group-item">Nombre: '+producto.nombre+'</li>'+
+                    '<li class="list-group-item">Codigo de barras: '+producto.codigoBarras+'</li>'+
+                    '<li class="list-group-item">Precio: '+producto.precioVenta+'</li>'+
+                    '<li class="list-group-item">Cantidad: '+producto.cantidadStock+'</li>'+
+                    '<li class="list-group-item">Estado: '+producto.estado+'</li>'+
                     '</ul>';
 
             }
@@ -199,25 +206,25 @@ function alertas(mensaje,tipo){
 
 function registerForm(){
     cadena = '<div class="p-3 mb-2 bg-light text-dark">'+
-        '<h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Registrar Producto</h1>'+
+        '<h1 class="display-5"><i class="fa-regular fa-file-circle-plus"></i> Registrar Producto</h1>'+
         '</div>'+
 
         '<form action="" method="post" id="myForm">'+
         '<input type="hidden" name="id" id="id">'+
-        '<label for="firstName" class="form-label">nombre</label>'+
-        '<input type="text" class="form-control" name="firstName" id="firstName" required> <br>'+
-        '<label for="lastName"  class="form-label">codigo de barras</label>'+
-        '<input type="text" class="form-control" name="lastName" id="lastName" required> <br>'+
-        '<label for="email" class="form-label">precio</label>'+
-        '<input type="email" class="form-control" name="email" id="email" required> <br>'+
-        '<label for="password" class="form-label">cantidad</label>'+
-        '<input type="password" class="form-control" id="password" name="password" required> <br>'+
+        '<label for="nombre" class="form-label">nombre</label>'+
+        '<input type="text" class="form-control" name="nombre" id="nombre" required> <br>'+
+        '<label for="codigoBarras"  class="form-label">codigo de barras</label>'+
+        '<input type="text" class="form-control" name="codigoBarras" id="codigoBarras" required> <br>'+
+        '<label for="precioVenta" class="form-label">precio</label>'+
+        '<input type="text" class="form-control" name="precioVenta" id="precioVenta" required> <br>'+
+        '<label for="cantidadStock" class="form-label">cantidad</label>'+
+        '<input type="number" class="form-control" id="cantidadStock" name="cantidadStock" required> <br>'+
         '<label for="estado" class="form-label">estado</label> <br>'+
         '<select class="form-select" name="estado" id="estado" >'+
-        '<option value="true">opcion 1</option>'+
-        '<option value="false">opcion 2</option>'+
+        '<option value="true">true</option>'+
+        '<option value="false">false</option>'+
         '</select><br> <br> <br>'+
-        '<button type="button" class="btn btn-outline-info" onclick="registrarUsuario()">Registrar</button>'+
+        '<button type="button" class="btn btn-outline-info" onclick="registrarUsuario()">Agregar</button>'+
         '</form>';
     document.getElementById("contentModal").innerHTML = cadena;
     var myModal = new bootstrap.Modal(document.getElementById('modalUsuario'))
@@ -231,7 +238,7 @@ async function registrarUsuario(){
     for(var [k, v] of formData){//convertimos los datos a json
         jsonData[k] = v;
     }
-    const request = await fetch("api/users", {
+    const request = await fetch("/producto/save", {
         method: 'POST',
         headers:{
             'Accept': 'application/json',
@@ -240,7 +247,7 @@ async function registrarUsuario(){
         body: JSON.stringify(jsonData)
     });
     listar();
-    alertas("Se ha registrado el usuario exitosamente!",1)
+    alertas("Se ha registrado el producto exitosamente!",1)
     document.getElementById("contentModal").innerHTML = '';
     var myModalEl = document.getElementById('modalUsuario')
     var modal = bootstrap.Modal.getInstance(myModalEl) // Returns a Bootstrap modal instance
