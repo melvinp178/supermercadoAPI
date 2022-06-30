@@ -2,6 +2,9 @@ package com.supermercadoAPI.Configuracion;
 
 
 
+import com.supermercadoAPI.seguridad.CustomUserDetailsService;
+import com.supermercadoAPI.seguridad.JwtAuthenticationEntryPoint;
+import com.supermercadoAPI.seguridad.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.sistema.blog.seguridad.CustomUserDetailsService;
-import com.sistema.blog.seguridad.JwtAuthenticationEntryPoint;
-import com.sistema.blog.seguridad.JwtAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity

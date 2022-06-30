@@ -6,6 +6,7 @@ import com.supermercadoAPI.persistence.entity.ProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class ProductController {
         errorResponse.put("status", HttpStatus.NOT_FOUND.toString());
         return new ResponseEntity(errorResponse,HttpStatus.NOT_FOUND);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ProductEntity saveProduct (@RequestBody ProductEntity productEntity){
         return productRepository.save(productEntity);
@@ -44,11 +45,13 @@ public class ProductController {
         return productRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/edit/{id}")
     public ResponseEntity editProduct(@RequestBody ProductEntity product, @PathVariable Long id){
         Map<String, String> response = new HashMap<>();
